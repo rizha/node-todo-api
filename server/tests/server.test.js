@@ -199,4 +199,11 @@ describe('PATCH /todos/:id', () => {
       .expect(404)
       .end(done);
   });
+
+  it('Should return 404 for non-objects ids', (done) => {
+    request(app)
+      .patch(`/todos/123abc`)
+      .expect(404)
+      .end(done);
+  });
 });
