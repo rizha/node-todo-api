@@ -54,9 +54,9 @@ app.get('/todos/:id', (req, res) =>  {
       return res.status(404).send();
     }
     
-    return res.send(todo);
+    res.send(todo);
   }).catch((e) => {
-    return res.status(400).send(e);
+    res.status(400).send(e);
   });
 });
 
@@ -71,9 +71,9 @@ app.delete('/todos/:id', (req, res) => {
     if (!todo) {
       return res.status(404).send();
     }
-    return res.status(204).send();
+    res.status(204).send();
   }).catch(e => {
-    return res.status(400).send(e);
+    res.status(400).send(e);
   });
 
 });
@@ -101,6 +101,22 @@ app.patch('/todos/:id', (req, res) => {
     res.status(201).send(todo);
   }).catch(e => {
     res.status(400).send();
+  });
+});
+
+app.post('/users', (req, res) => {
+  let body = _.pick(req.body, ['email', 'password']);
+  let user = new User(body);
+
+  user.save().then((user) => {
+    return user.generateAuthToken();
+  }).then((token) => {
+    res
+      .status(201)
+      .header('x-auth', token)
+      .send(user);
+  }).catch((e) => {
+    res.status(400).send(e);
   });
 });
 
