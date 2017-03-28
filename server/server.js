@@ -7,7 +7,8 @@ const express = require('express')
 
 const {mongose} = require('./db/mongoose')
   , {User} = require('./models/user')
-  , {Todo} = require('./models/todo');
+  , {Todo} = require('./models/todo')
+  , {authenticate} = require('./middleware/authenticate');
 
 
 const app = express();
@@ -113,11 +114,15 @@ app.post('/users', (req, res) => {
   }).then((token) => {
     res
       .status(201)
-      .header('x-auth', token)
+      .header('x-auth-token', token)
       .send(user);
   }).catch((e) => {
     res.status(400).send(e);
   });
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 app.listen(port, () => {
