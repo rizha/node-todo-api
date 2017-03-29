@@ -1,14 +1,14 @@
 require('./config/config');
 
 const express = require('express')
-  , bodyParser = require('body-parser')
-  , {ObjectID} = require('mongodb')
-  , _ = require('lodash');
+const bodyParser = require('body-parser')
+const {ObjectID} = require('mongodb')
+const _ = require('lodash');
 
-const {mongose} = require('./db/mongoose')
-  , {User} = require('./models/user')
-  , {Todo} = require('./models/todo')
-  , {authenticate} = require('./middleware/authenticate');
+const {mongose} = require('./db/mongoose');
+const {User} = require('./models/user')
+const {Todo} = require('./models/todo')
+const {authenticate} = require('./middleware/authenticate');
 
 
 const app = express();
@@ -38,8 +38,6 @@ app.get('/todos', (req, res) => {
       results: todos,
       code: 200
     });
-  }, e => {
-    res.status(400).send(e);
   });
 });
 
@@ -56,8 +54,6 @@ app.get('/todos/:id', (req, res) =>  {
     }
     
     res.send(todo);
-  }).catch((e) => {
-    res.status(400).send(e);
   });
 });
 
@@ -73,8 +69,6 @@ app.delete('/todos/:id', (req, res) => {
       return res.status(404).send();
     }
     res.status(204).send();
-  }).catch(e => {
-    res.status(400).send(e);
   });
 
 });
@@ -98,10 +92,7 @@ app.patch('/todos/:id', (req, res) => {
     if (!todo) {
       return res.status(404).send();
     }
-
     res.status(201).send(todo);
-  }).catch(e => {
-    res.status(400).send();
   });
 });
 
