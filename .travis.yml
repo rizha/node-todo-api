@@ -3,3 +3,5 @@ node_js:
   - "7"
 services:
   - mongodb
+after_success:
+  - 'cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'
