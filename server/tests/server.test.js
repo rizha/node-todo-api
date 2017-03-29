@@ -1,11 +1,11 @@
-const expect = require('chai').expect
-  , request = require('supertest')
-  , {ObjectID} = require('mongodb');
+const expect = require('chai').expect;
+const request = require('supertest');
+const {ObjectID} = require('mongodb');
 
-const {app} = require('./../server')
-  , {Todo} = require('./../models/todo')
-  , {User} = require('./../models/user')
-  , {todos, populateTodos, users, populateUsers} = require('./seed/seed');
+const {app} = require('./../server');
+const {Todo} = require('./../models/todo');
+const {User} = require('./../models/user');
+const {todos, populateTodos, users, populateUsers} = require('./seed/seed');
 
 beforeEach(populateUsers);
 beforeEach(populateTodos);
@@ -183,9 +183,10 @@ describe('PATCH /todos/:id', () => {
       .end(done);
   });
 
-  it('Should return 404 for non-objects ids', (done) => {
+  it('Should return 404 for non exists ids', (done) => {
+    let hexId = new ObjectID();
     request(app)
-      .patch(`/todos/123abc`)
+      .patch(`/todos/${hexId}`)
       .expect(404)
       .end(done);
   });
@@ -211,7 +212,7 @@ describe('GET /users/me', () => {
       .end(done);
   });
 
-  it('Should return 401 token is invalid jwt', (done) => {
+  it('Should return 401 if using invalid jwt', (done) => {
     request(app)
       .get('/users/me')
       .set('x-auth-token', 'abcd')
@@ -222,7 +223,7 @@ describe('GET /users/me', () => {
   it('Should return 401 token valid but user not found', (done) => {
     request(app)
       .get('/users/me')
-      .set('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGRhNjU2ZDM5NmFiNTdmOWZkMWY5YjgiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNDkwNzA3ODIxfQ.XIcZFfO-qT6daw2JxxY1YvFa8LbLY117CN0AcG8fTN0')
+      .set('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGRhNjMwZmEwMGU1ODdlZDkwODhmMDQiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNDkwNzEwNjY1fQ.MpFeg0QOJ7yFFCTX2euFhyLVEJ_UE5moH8W8x9tbJ50')
       .expect(401)
       .end(done);
   });
@@ -294,10 +295,18 @@ describe('POST /users/login', () => {
       });
   });
 
-  it('Should reject invalid login', (done) => {
+  it('Should reject invalid password login', (done) => {
     request(app)
       .post('/users/login')
       .send({email: users[1].email, password: users[1].password + 1})
+      .expect(400)
+      .end(done);
+  });
+
+  it('Should reject invalid email login', (done) => {
+    request(app)
+      .post('/users/login')
+      .send({email: 'r' + users[1].email, password: users[1].password + 1})
       .expect(400)
       .end(done);
   });
