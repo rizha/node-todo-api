@@ -1,3 +1,6 @@
 node_modules
 playground
 .vscode
+coverage
+.DS_STORE
+.nyc_output
