@@ -288,7 +288,7 @@ describe('GET /users/me', () => {
   it('Should return 401 with valid token but user not found', (done) => {
     request(app)
       .get('/users/me')
-      .set('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGRhNjMwZmEwMGU1ODdlZDkwODhmMDQiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNDkwNzEwNjY1fQ.MpFeg0QOJ7yFFCTX2euFhyLVEJ_UE5moH8W8x9tbJ50')
+      .set('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGRkMWY2M2Q3N2M1MDAxOTA0NzBhYWYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNDkwODg2NDk5fQ.YvXpoMRNE-Ppi_wIhONURCLphclRXFtT3vU7mC5ZwAs')
       .expect(401)
       .end(done);
   });
