@@ -3,5 +3,7 @@ node_js:
   - "7"
 services:
   - mongodb
+before_script:
+  - 'cp ./server/config/config.example.json ./server/config/config.json'
 after_success:
   - 'cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'
