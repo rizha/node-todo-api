@@ -59,7 +59,7 @@ describe('GET /todos', () => {
       .set('x-auth-token', users[0].tokens[0].token)
       .expect(200)
       .expect(res => {
-        expect(res.body.results.length).to.equal(1);
+        expect(res.body.length).to.equal(1);
       }).end(done);
   });
 });
