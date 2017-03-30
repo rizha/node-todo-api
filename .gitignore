@@ -4,3 +4,4 @@ playground
 coverage
 .DS_STORE
 .nyc_output
+server/config/config.json
