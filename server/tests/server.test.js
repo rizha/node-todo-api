@@ -220,7 +220,7 @@ describe('GET /users/me', () => {
       .end(done);
   });
 
-  it('Should return 401 token valid but user not found', (done) => {
+  it('Should return 401 with valid token but user not found', (done) => {
     request(app)
       .get('/users/me')
       .set('x-auth-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OGRhNjMwZmEwMGU1ODdlZDkwODhmMDQiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNDkwNzEwNjY1fQ.MpFeg0QOJ7yFFCTX2euFhyLVEJ_UE5moH8W8x9tbJ50')
@@ -309,5 +309,21 @@ describe('POST /users/login', () => {
       .send({email: 'r' + users[1].email, password: users[1].password + 1})
       .expect(400)
       .end(done);
+  });
+});
+
+describe('DELETE /users/me/token', () => {
+  it('Should remove auth token on logout', (done) => {
+    request(app)
+      .delete('/users/me/token')
+      .set('x-auth-token', users[0].tokens[0].token)
+      .expect(204)
+      .end((err, res) => {
+        if (err) done(err);
+        User.findById(users[0]._id).then((user) => {
+          expect(user.tokens.length).to.equal(0);
+          done();
+        }).catch(e => done(e));
+      });
   });
 });
