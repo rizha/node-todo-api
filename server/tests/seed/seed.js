@@ -8,26 +8,26 @@ let userTwoId = new ObjectID();
 
 const users = [{
   _id: userOneId,
-  email: 'rizha@example.com',
+  email: 'user1@example.com',
   password: 'userOnePass',
   tokens: [{
     access: 'auth',
     token: jwt.sign({
       _id: userOneId,
       access: 'auth'
-    }, 'secretvalue').toString()
+    }, process.env.JWT_SECRET).toString()
     
   }]
 }, {
   _id: userTwoId,
-  email: 'deglazed@example.com',
+  email: 'user2@example.com',
   password: 'userTwoPass',
   tokens: [{
     access: 'auth',
     token: jwt.sign({
       _id: userTwoId,
       access: 'auth'
-    }, 'secretvalue').toString()
+    }, process.env.JWT_SECRET).toString()
     
   }]
 }];
