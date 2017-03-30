@@ -37,10 +37,7 @@ app.get('/todos', authenticate, (req, res) => {
   let todos = Todo.find({
     _creator: req.user._id
   }).then(todos => {
-    res.send({
-      results: todos,
-      code: 200
-    });
+    res.send(todos);
   });
 });
 
