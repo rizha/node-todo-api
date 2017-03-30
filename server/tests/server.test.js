@@ -364,7 +364,7 @@ describe('POST /users/login', () => {
     request(app)
       .post('/users/login')
       .send({email: users[1].email, password: users[1].password + 1})
-      .expect(400)
+      .expect(401)
       .expect((res) => {
         expect(res.headers['x-auth-token']).to.not.exist;
       })
@@ -382,7 +382,7 @@ describe('POST /users/login', () => {
     request(app)
       .post('/users/login')
       .send({email: 'r' + users[1].email, password: users[1].password + 1})
-      .expect(400)
+      .expect(401)
       .end(done);
   });
 });
